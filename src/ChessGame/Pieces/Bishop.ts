@@ -7,10 +7,6 @@ import { Utilities } from "../Utilities";
 export class Bishop extends Piece {
     static bishopMoves = [{ x: 1, y: 1 }, { x: 1, y: -1 }, { x: -1, y: 1 }, { x: -1, y: -1 }];
 
-    constructor(color: Color) {
-        super(color);
-    }
-
     public charReference(): string {
         return "B"
     }

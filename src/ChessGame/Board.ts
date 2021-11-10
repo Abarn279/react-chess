@@ -10,63 +10,60 @@ import { Pawn } from "./Pieces/Pawn";
 export class Board {
     private spaces: { [index: string]: Piece | null } = {}
 
-    constructor() {
-        ["A", "B", "C", "D", "E", "F", "G", "H"].forEach(file => {
-            ["1", "2", "3", "4", "5", "6", "7", "8"].forEach(rank => {
-                var space = file + rank;
+    constructor(fen: string) {
+        const [pieceStr, activeColor, castlingAvail, enPassantTgt, halfmoveClock, fullmoveNumber] = fen.split(' ');
 
-                // Do this for all spaces, put it first so i can comment all the stuff below for testing
-                this.spaces[space] = null;
+        var rankNames = ["8", "7", "6", "5", "4", "3", "2", "1"];
+        var fileNames = ["A", "B", "C", "D", "E", "F", "G", "H"];
+        var ranks = pieceStr.split('/');
 
-                // // Rooks
-                // if (["A1", "H1"].includes(space)) {
-                //     this.spaces[space] = new Rook(Color.WHITE);
-                // }
-                // else if (["A8", "H8"].includes(space)) {
-                //     this.spaces[space] = new Rook(Color.BLACK);
-                // }
+        for (var rankInd = 0; rankInd < 8; rankInd++) {
+            var rankStr = ranks[rankInd]
 
-                // // Knights
-                // else if (["B1", "G1"].includes(space)) {
-                //     this.spaces[space] = new Knight(Color.WHITE);
-                // }
-                // else if (["B8", "G8"].includes(space)) {
-                //     this.spaces[space] = new Knight(Color.BLACK);
-                // }
 
-                // Bishops
-                if (["C1", "F1"].includes(space)) {
-                    this.spaces[space] = new Bishop(Color.WHITE);
-                }
-                else if (["C8", "F8"].includes(space)) {
-                    this.spaces[space] = new Bishop(Color.BLACK);
+            var fileInd = 0;
+            rankStr.split('').forEach((char: string) => {
+                var space = fileNames[fileInd] + rankNames[rankInd];
+
+                // FEN uses numbers for empty spaces. Skip and move on
+                if (!!parseInt(char)) {
+                    fileInd += parseInt(char);
+                    return;
                 }
 
-                // // Queens
-                // else if (space == "D1") {
-                //     this.spaces[space] = new Queen(Color.WHITE);
-                // }
-                // else if (space == "D8") {
-                //     this.spaces[space] = new Queen(Color.BLACK);
-                // }
+                // Get piece char and color
+                var color = char == char.toLowerCase() ? Color.BLACK : Color.WHITE;
 
-                // // Queens
-                // else if (space == "E1") {
-                //     this.spaces[space] = new King(Color.WHITE);
-                // }
-                // else if (space == "E8") {
-                //     this.spaces[space] = new King(Color.BLACK);
-                // }
+                // Set the piece
+                var piece: Piece | null;
+                switch (char.toLowerCase()) {
+                    case 'p':
+                        piece = new Pawn(color);
+                        break;
+                    case 'r':
+                        piece = new Rook(color);
+                        break;
+                    case 'n':
+                        piece = new Knight(color);
+                        break;
+                    case 'b':
+                        piece = new Bishop(color);
+                        break;
+                    case 'q':
+                        piece = new Queen(color);
+                        break;
+                    case 'k':
+                        piece = new King(color);
+                        break;
+                    default:
+                        piece = null;
+                }
 
-                // // Pawns
-                // else if (rank == "2") {
-                //     this.spaces[space] = new Pawn(Color.WHITE);
-                // }
-                // else if (rank == "7") {
-                //     this.spaces[space] = new Pawn(Color.BLACK);
-                // }
-            })
-        })
+                this.spaces[space] = piece;
+
+                fileInd++;
+            });
+        }
 
         Object.keys(this.spaces).forEach((space: string) => {
             if (this.spaces[space] != null) {
@@ -81,8 +78,6 @@ export class Board {
     }
 
     public isSpace(space: string): boolean {
-        var keys = Object.keys(this.spaces);
-        debugger;
         return Object.keys(this.spaces).includes(space);
     }
 
