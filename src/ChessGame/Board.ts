@@ -18,16 +18,19 @@ export class Board {
         var ranks = pieceStr.split('/');
 
         for (var rankInd = 0; rankInd < 8; rankInd++) {
-            var rankStr = ranks[rankInd]
-
-
+            var rankStr = ranks[rankInd];
             var fileInd = 0;
             rankStr.split('').forEach((char: string) => {
                 var space = fileNames[fileInd] + rankNames[rankInd];
 
                 // FEN uses numbers for empty spaces. Skip and move on
                 if (!!parseInt(char)) {
-                    fileInd += parseInt(char);
+                    var emptySpaces = parseInt(char);
+                    for (var i = 0; i < emptySpaces; i++) {
+                        this.spaces[space] = null;
+                        fileInd++;
+                        var space = fileNames[fileInd] + rankNames[rankInd];
+                    }
                     return;
                 }
 
