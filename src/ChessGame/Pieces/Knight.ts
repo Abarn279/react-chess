@@ -5,7 +5,7 @@ import { Board } from "../Board";
 
 export class Knight extends Piece {
     public charReference(): string {
-        return "N"
+        return "n"
     }
 
     public getPossibleMoves(board: Board, myPosition: string): Move[] {

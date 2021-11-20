@@ -8,7 +8,7 @@ export class Bishop extends Piece {
     static bishopMoves = [{ x: 1, y: 1 }, { x: 1, y: -1 }, { x: -1, y: 1 }, { x: -1, y: -1 }];
 
     public charReference(): string {
-        return "B"
+        return "b"
     }
 
     public getPossibleMoves(board: Board, mySpace: string): Move[] {

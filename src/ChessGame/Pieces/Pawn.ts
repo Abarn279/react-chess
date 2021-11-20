@@ -6,7 +6,7 @@ import { Utilities } from "../Utilities";
 
 export class Pawn extends Piece {
     public charReference(): string {
-        return "P"
+        return "p"
     }
 
     public getPossibleMoves(board: Board, myPosition: string): Move[] {

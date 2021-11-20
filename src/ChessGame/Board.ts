@@ -34,6 +34,12 @@ export class Board {
         return Object.keys(this.spaces).includes(space);
     }
 
+    public isDark(space: string): boolean {
+        let isoddfile = this.files.indexOf(space[0]) % 2 === 0;
+        let isevenrank = parseInt(space[1]) % 2 === 0;
+        return !!(+isoddfile ^ +isevenrank);
+    }
+
     public toString(): string {
         var s = "";
         this.ranks.forEach(rank => {

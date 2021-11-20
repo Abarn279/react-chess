@@ -14,6 +14,6 @@ export abstract class Piece {
     public abstract getPossibleMoves(board: Board, myPosition: string): Move[];
 
     public toString(): string {
-        return (this.color === Color.WHITE ? 'W' : 'B') + this.charReference();
+        return (this.color === Color.WHITE ? 'w' : 'b') + this.charReference();
     }
 }
