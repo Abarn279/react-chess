@@ -11,7 +11,7 @@ export class Bishop extends Piece {
         return "B"
     }
 
-    public getLegalMoves(board: Board, mySpace: string): Move[] {
+    public getPossibleMoves(board: Board, mySpace: string): Move[] {
         var legalMoves: Move[] = [];
 
         Bishop.bishopMoves.forEach(direction => {

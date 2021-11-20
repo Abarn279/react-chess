@@ -8,7 +8,7 @@ export class Knight extends Piece {
         return "N"
     }
 
-    public getLegalMoves(board: Board, myPosition: string): Move[] {
+    public getPossibleMoves(board: Board, myPosition: string): Move[] {
         return [];
     }
 }

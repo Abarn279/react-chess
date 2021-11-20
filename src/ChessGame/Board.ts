@@ -8,20 +8,56 @@ import { King } from "./Pieces/King";
 import { Pawn } from "./Pieces/Pawn";
 
 export class Board {
+    public ranks: string[] = ["8", "7", "6", "5", "4", "3", "2", "1"];
+    public files: string[] = ["a", "b", "c", "d", "e", "f", "g", "h"];
+
     private spaces: { [index: string]: Piece | null } = {}
 
+    private toMove: Color = Color.WHITE;
+
     constructor(fen: string) {
+        this.loadFen(fen);
+
+        for (var space in this.spaces) {
+            if (this.spaces[space] != null) {
+                console.log(this.spaces[space])
+                console.log(this.spaces[space]?.getPossibleMoves(this, space))
+            }
+        }
+    }
+
+    public pieceAt(space: string): Piece | null {
+        return this.spaces[space];
+    }
+
+    public isSpace(space: string): boolean {
+        return Object.keys(this.spaces).includes(space);
+    }
+
+    public toString(): string {
+        var s = "";
+        this.ranks.forEach(rank => {
+            this.files.forEach(file => {
+                var piece = this.spaces[file + rank];
+                s += `${piece ? piece.toString() : '..'} `
+            })
+            s += '\n'
+        })
+        return s;
+    }
+
+    private loadFen(fen: string): void {
         const [pieceStr, activeColor, castlingAvail, enPassantTgt, halfmoveClock, fullmoveNumber] = fen.split(' ');
 
-        var rankNames = ["8", "7", "6", "5", "4", "3", "2", "1"];
-        var fileNames = ["A", "B", "C", "D", "E", "F", "G", "H"];
+        this.toMove = activeColor === 'w' ? Color.WHITE : Color.BLACK;
+
         var ranks = pieceStr.split('/');
 
         for (var rankInd = 0; rankInd < 8; rankInd++) {
             var rankStr = ranks[rankInd];
             var fileInd = 0;
             rankStr.split('').forEach((char: string) => {
-                var space = fileNames[fileInd] + rankNames[rankInd];
+                var space = this.files[fileInd] + this.ranks[rankInd];
 
                 // FEN uses numbers for empty spaces. Skip and move on
                 if (!!parseInt(char)) {
@@ -29,7 +65,7 @@ export class Board {
                     for (var i = 0; i < emptySpaces; i++) {
                         this.spaces[space] = null;
                         fileInd++;
-                        var space = fileNames[fileInd] + rankNames[rankInd];
+                        var space = this.files[fileInd] + this.ranks[rankInd];
                     }
                     return;
                 }
@@ -67,32 +103,5 @@ export class Board {
                 fileInd++;
             });
         }
-
-        Object.keys(this.spaces).forEach((space: string) => {
-            if (this.spaces[space] != null) {
-                console.log(this.spaces[space])
-                console.log(this.spaces[space]?.getLegalMoves(this, space))
-            }
-        })
-    }
-
-    public pieceAt(space: string): Piece | null {
-        return this.spaces[space];
-    }
-
-    public isSpace(space: string): boolean {
-        return Object.keys(this.spaces).includes(space);
-    }
-
-    public toString(): string {
-        var s = "";
-        ["8", "7", "6", "5", "4", "3", "2", "1"].forEach(rank => {
-            ["A", "B", "C", "D", "E", "F", "G", "H"].forEach(file => {
-                var piece = this.spaces[file + rank];
-                s += `${piece ? piece.toString() : '..'} `
-            })
-            s += '\n'
-        })
-        return s;
     }
 }

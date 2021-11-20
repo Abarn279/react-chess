@@ -8,7 +8,7 @@ export class Queen extends Piece {
         return "Q"
     }
 
-    public getLegalMoves(board: Board, myPosition: string): Move[] {
+    public getPossibleMoves(board: Board, myPosition: string): Move[] {
         return [];
     }
 }

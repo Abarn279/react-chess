@@ -8,7 +8,7 @@ export class Rook extends Piece {
         return "R"
     }
 
-    public getLegalMoves(board: Board, myPosition: string): Move[] {
+    public getPossibleMoves(board: Board, myPosition: string): Move[] {
         return [];
     }
 }
