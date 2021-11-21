@@ -7,8 +7,16 @@
 .space {
     border: 1px solid black;
 
+    &.selected {
+        border: 5px outset black;
+    }
+
     &.dark {
         background-color: lightsteelblue;
+    }
+
+    &.potential {
+        border: 5px outset red;
     }
 }
 

@@ -1,5 +1,4 @@
 import { Piece } from "./Piece";
-import { Color } from "../Color";
 import { Move } from "../Move";
 import { Board } from "../Board";
 import { Utilities } from "../Utilities";
@@ -11,11 +10,11 @@ export class Bishop extends Piece {
         return "b"
     }
 
-    public getPossibleMoves(board: Board, mySpace: string): Move[] {
+    public getPossibleMoves(board: Board, myPosition: string): Move[] {
         var legalMoves: Move[] = [];
 
         Bishop.bishopMoves.forEach(direction => {
-            var currentSpace = mySpace;
+            var currentSpace = myPosition;
 
             while (true) {
                 // Get the next possible space
@@ -27,14 +26,15 @@ export class Bishop extends Piece {
 
                 // No piece? It's legal
                 if (!existingPiece) {
-                    legalMoves.push(new Move(this, mySpace, newSpace, null, false))
+                    legalMoves.push(new Move(this, myPosition, newSpace, null, false))
                 }
 
                 // My own piece? break. 
                 else if (existingPiece.color == this.color) break;
 
                 else if (existingPiece.color != this.color) {
-                    legalMoves.push(new Move(this, mySpace, newSpace, existingPiece, false))
+                    legalMoves.push(new Move(this, myPosition, newSpace, existingPiece, false))
+                    break;
                 }
 
                 currentSpace = newSpace;

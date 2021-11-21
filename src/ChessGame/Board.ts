@@ -6,6 +6,7 @@ import { Bishop } from "./Pieces/Bishop";
 import { Queen } from "./Pieces/Queen";
 import { King } from "./Pieces/King";
 import { Pawn } from "./Pieces/Pawn";
+import { Move } from "./Move";
 
 export class Board {
     public ranks: string[] = ["8", "7", "6", "5", "4", "3", "2", "1"];
@@ -17,13 +18,12 @@ export class Board {
 
     constructor(fen: string) {
         this.loadFen(fen);
+    }
 
-        for (var space in this.spaces) {
-            if (this.spaces[space] != null) {
-                console.log(this.spaces[space])
-                console.log(this.spaces[space]?.getPossibleMoves(this, space))
-            }
-        }
+    public makeMove(move: Move): void {
+        this.spaces[move.fromSpace] = null;
+        this.spaces[move.toSpace] = move.piece;
+        this.toMove = this.toMove === Color.WHITE ? Color.BLACK : Color.WHITE;
     }
 
     public pieceAt(space: string): Piece | null {
@@ -39,6 +39,8 @@ export class Board {
         let isevenrank = parseInt(space[1]) % 2 === 0;
         return !!(+isoddfile ^ +isevenrank);
     }
+
+    public getTurn(): Color { return this.toMove; }
 
     public toString(): string {
         var s = "";
